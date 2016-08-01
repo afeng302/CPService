@@ -36,24 +36,22 @@ namespace CPServiceTest.CPTree
 
         public void AddChild(ICPNode child)
         {
-            if (!(child is CPNode))
+            // type check
+            CPNode cpNodeChild = child as CPNode;
+            if (cpNodeChild == null)
             {
-                return;
+                return; // error log
             }
 
-            if (childNodeList.Contains(child))
+            if (childNodeList.Contains(cpNodeChild))
             {
                 return;
             }
 
             // add node onto tree
-            childNodeList.AddLast(child);
-            ((CPNode)child).Parent = this;
-
-            // set sibling (next and previous)
-            CPNode lastChild = childNodeList.Last.Value as CPNode;
-            ((CPNode)child).PreviousSibling = lastChild;
-            lastChild.NextSibling = child;
+            LinkedListNode<ICPNode> linkedListNode = childNodeList.AddLast(cpNodeChild);
+            cpNodeChild.AttachedLinkedListNode = linkedListNode;
+            cpNodeChild.Parent = this;
         }
 
         public ICPNode GetChild(string name)
@@ -73,19 +71,29 @@ namespace CPServiceTest.CPTree
 
         public ICPNode NextSibling
         {
-            get;
-            private set;
+            get
+            {
+                return this.AttachedLinkedListNode.Next == null ? null : this.AttachedLinkedListNode.Next.Value;
+            }
         }
 
         public ICPNode PreviousSibling
         {
-            get;
-            private set;
+            get
+            {
+                return this.AttachedLinkedListNode.Previous == null ? null : this.AttachedLinkedListNode.Previous.Value;
+            }
         }
 
         public List<ICPNode> ChildNodeList
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public LinkedListNode<ICPNode> AttachedLinkedListNode
+        {
+            get;
+            private set;
         }
 
         public bool IsLeafNode
@@ -112,6 +120,6 @@ namespace CPServiceTest.CPTree
         }
 
         public object Tag { get; set; }
-        
+
     }
 }

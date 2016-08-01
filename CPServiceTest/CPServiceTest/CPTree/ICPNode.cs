@@ -30,6 +30,8 @@ namespace CPServiceTest.CPTree
 
         List<ICPNode> ChildNodeList { get; }
 
+        LinkedListNode<ICPNode> AttachedLinkedListNode { get; }
+
         bool IsLeafNode { get; }
 
         int InstanceCount { get; }
