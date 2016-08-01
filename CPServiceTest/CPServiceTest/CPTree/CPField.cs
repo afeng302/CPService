@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CPServiceTest.Visitor;
 
 namespace CPServiceTest.CPTree
 {
@@ -23,6 +24,11 @@ namespace CPServiceTest.CPTree
             this.FieldType = type;
             this.Offset = offset;
             this.BitLen = bitLen;
+        }
+
+        public override void Accept(ICPVisitor cpVisitor, object context)
+        {
+            cpVisitor.VisitCPField(this);
         }
     }
 }

@@ -7,17 +7,27 @@ using System.Threading.Tasks;
 
 namespace CPServiceTest.Visitor
 {
-    class VerifyStrucVisitor : ICPVisitor, IDisposable
+    class VerifyStructVisitor : ICPVisitor
     {
         StreamWriter sw = null;
         bool disposed = false;
-        public VerifyStrucVisitor(string outputFile)
+        public VerifyStructVisitor(string outputFile)
         {
             sw = new StreamWriter(outputFile, false);
         }
         public void VisitCPNode(CPTree.ICPNode node)
         {
             sw.WriteLine(node.Tag.ToString());
+        }
+
+        public void VisitCPStruct(CPTree.ICPStrcut cpStruct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void VisitCPField(CPTree.ICPField cpField)
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose()
@@ -58,7 +68,7 @@ namespace CPServiceTest.Visitor
             }
         }
 
-        ~VerifyStrucVisitor()
+        ~VerifyStructVisitor()
         {
             Dispose(false);
         }

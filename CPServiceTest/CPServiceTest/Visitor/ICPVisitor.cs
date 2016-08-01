@@ -7,10 +7,12 @@ using CPServiceTest.CPTree;
 
 namespace CPServiceTest.Visitor
 {
-    interface ICPVisitor
+    interface ICPVisitor : IDisposable
     {
         void VisitCPNode(ICPNode node);
 
-        //void VisitCPSStruc(ICPStrcut cpStruct);
+        void VisitCPStruct(ICPStrcut cpStruct);
+
+        void VisitCPField(ICPField cpField);
     }
 }

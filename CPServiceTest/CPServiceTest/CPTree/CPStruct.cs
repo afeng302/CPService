@@ -31,5 +31,15 @@ namespace CPServiceTest.CPTree
         {
             this.Offset = offset;
         }
+
+        public override void Accept(Visitor.ICPVisitor cpVisitor, object context)
+        {
+            cpVisitor.VisitCPStruct(this);
+
+            foreach (var nextChild in this.ChildNodeList)
+            {
+                nextChild.Accept(cpVisitor, context);
+            }
+        }
     }
 }

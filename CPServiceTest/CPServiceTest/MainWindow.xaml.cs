@@ -111,7 +111,7 @@ namespace CPServiceTest
             sw.Restart();
 
             // verify the structure
-            using (VerifyStrucVisitor cpVisitor = new VerifyStrucVisitor(@"C:\Users\a23126\Desktop\cpv-files\output-struct"))
+            using (VerifyStructVisitor cpVisitor = new VerifyStructVisitor(@"C:\Users\a23126\Desktop\cpv-files\output-struct"))
             {
                 cpTree.Root.Accept(cpVisitor, null);
             }

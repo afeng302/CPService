@@ -58,7 +58,7 @@
     <Compile Include="CPTree\ICPField.cs" />
     <Compile Include="CPTree\ICPStrcut.cs" />
     <Compile Include="Visitor\ICPVisitor.cs" />
-    <Compile Include="Visitor\VerifyStrucVisitor.cs" />
+    <Compile Include="Visitor\VerifyStructVisitor.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
