@@ -73,6 +73,7 @@ namespace CPServiceTest
                         if (!int.TryParse(m.Groups["offset"].Value, out offset))
                         {
                             offset = 0; // error log
+                            throw new Exception(string.Format("Invalid offset [{0}].", m.Groups["offset"].Value));
                         }
                         cpStruct.SetAttr(offset);
                     }
@@ -82,22 +83,48 @@ namespace CPServiceTest
                         cpNode = cpField;
 
                         TetraCpFieldType type;
-                        if (Enum.TryParse<TetraCpFieldType>(m.Groups["type"].Value.Replace(" ", "_"), true, out type))
+                        if (!Enum.TryParse<TetraCpFieldType>(m.Groups["type"].Value.Replace(" ", "_"), true, out type))
                         {
                             type = TetraCpFieldType.None; // error log
+                            throw new Exception(string.Format("Invalid type [{0}].", m.Groups["type"].Value));
                         }
                         int offset;
                         int bitLen;
+                        int startBit = -1;
                         if (!int.TryParse(m.Groups["offset"].Value, out offset))
                         {
                             offset = 0; // error log
+                            throw new Exception(string.Format("Invalid offset [{0}].", m.Groups["offset"].Value));
                         }
                         if (!int.TryParse(m.Groups["bit_len"].Value, out bitLen))
                         {
                             bitLen = 0; // error log
+                            throw new Exception(string.Format("Invalid bit_len [{0}].", m.Groups["bit_len"].Value));
                         }
-                        cpField.SetAttr(type, offset, bitLen);
+                        if (!string.IsNullOrEmpty(m.Groups["bit_start"].Value)
+                            && !int.TryParse(m.Groups["bit_start"].Value, out startBit))
+                        {
+                            startBit = 0; // error log
+                            throw new Exception(string.Format("Invalid bit_start [{0}].", m.Groups["bit_start"].Value));
+                        }
+                        cpField.SetAttr(type, offset, bitLen, startBit);
                     }
+
+                    // dimension
+                    string dim = m.Groups["dim"].Value;
+                    string[] dims = dim.Split(new char[1] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    int counter = 1;
+                    for (int i = 0; i < dims.Length; i++)
+                    {
+                        int d;
+                        if (!int.TryParse(dims[i], out d))
+                        {
+                            // error log
+                            throw new Exception(string.Format("Invalid dim [{0}].", m.Groups["dim"].Value));
+                        }
+                        counter *= d;
+                    }
+                    cpNode.SetInstanceCount(counter);
 
                     cpNode.Tag = line;
 
@@ -111,14 +138,32 @@ namespace CPServiceTest
             sw.Restart();
 
             // verify the structure
-            using (VerifyStructVisitor cpVisitor = new VerifyStructVisitor(@"C:\Users\a23126\Desktop\cpv-files\output-struct"))
+            using (TestStructVisitor cpVisitor = new TestStructVisitor(@"C:\Users\a23126\Desktop\cpv-files\output-struct"))
             {
                 cpTree.Root.Accept(cpVisitor, null);
             }
 
             sw.Stop();
             this.lstBoxOutput.Items.Insert(0, string.Format("Time elapsed (VerifyStrucVisitor): {0} ms", sw.ElapsedMilliseconds));
-            
+            sw.Restart();
+
+
+            // verify node info
+            using (TestNodeInfoVisitor cpVisitor = new TestNodeInfoVisitor(@"C:\Users\a23126\Desktop\cpv-files\output-node-info"))
+            {
+                cpTree.Root.Accept(cpVisitor, null);
+            }
+            sw.Stop();
+            this.lstBoxOutput.Items.Insert(0, string.Format("Time elapsed (TestNodeInfoVisitor): {0} ms", sw.ElapsedMilliseconds));
+            sw.Restart();
+
+            // print struct size
+            using (TestStructSizeVisitor cpVisitor = new TestStructSizeVisitor(@"C:\Users\a23126\Desktop\cpv-files\output-struct-size"))
+            {
+                cpTree.Root.Accept(cpVisitor, null);
+            }
+            sw.Stop();
+            this.lstBoxOutput.Items.Insert(0, string.Format("Time elapsed (TestStructSizeVisitor): {0} ms", sw.ElapsedMilliseconds));
         }
     }
 }

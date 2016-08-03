@@ -56,9 +56,12 @@
     <Compile Include="CPTree\CPField.cs" />
     <Compile Include="CPTree\CPStruct.cs" />
     <Compile Include="CPTree\ICPField.cs" />
-    <Compile Include="CPTree\ICPStrcut.cs" />
+    <Compile Include="CPTree\ICPStruct.cs" />
+    <Compile Include="Visitor\BitFieldMaskSettingVisitor.cs" />
     <Compile Include="Visitor\ICPVisitor.cs" />
-    <Compile Include="Visitor\VerifyStructVisitor.cs" />
+    <Compile Include="Visitor\TestNodeInfoVisitor.cs" />
+    <Compile Include="Visitor\TestStructSizeVisitor.cs" />
+    <Compile Include="Visitor\TestStructVisitor.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

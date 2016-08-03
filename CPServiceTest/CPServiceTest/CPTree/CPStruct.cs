@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CPServiceTest.CPTree
 {
-    class CPStruct : CPNode, ICPStrcut
+    class CPStruct : CPNode, ICPStruct
     {
         public CPStruct(string name, string fullName)
             : base(name, fullName)
@@ -17,14 +17,34 @@ namespace CPServiceTest.CPTree
         {
             get
             {
-                throw new NotImplementedException();
-            }
-        }
+                // next sibling offset - my offset
+                if (this.NextSibling != null)
+                {
+                    return this.NextSibling.Offset - this.Offset;
+                }
 
-        public int Offset
-        {
-            get;
-            private set;
+                // last leaf child offset + last leaf child length - my offset
+                ICPNode lastChild = this.LastChild;
+                ICPNode parent = lastChild;
+                while (parent.LastChild != null)
+                {
+                    lastChild = parent.LastChild;
+                    parent = lastChild;
+                }
+                ICPField lastField = lastChild as ICPField;
+                if (lastField == null)
+                {
+                    // error log
+                    throw new Exception("last child is null");
+                }
+                if (lastField.FieldType == TetraCpFieldType.bit)
+                {
+                    // error log
+                    throw new Exception("cannot get the size of bit field structure");
+                }
+
+                return lastField.Offset + lastField.BitLen / 8 - this.Offset;
+            }
         }
 
         public void SetAttr(int offset)

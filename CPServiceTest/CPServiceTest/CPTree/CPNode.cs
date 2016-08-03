@@ -61,19 +61,23 @@ namespace CPServiceTest.CPTree
 
         public ICPNode FirstChild
         {
-            get { throw new NotImplementedException(); }
+            get { return this.childNodeList.First == null ? null : this.childNodeList.First.Value; }
         }
 
         public ICPNode LastChild
         {
-            get { throw new NotImplementedException(); }
+            get { return this.childNodeList.Last == null ? null : this.childNodeList.Last.Value; }
         }
 
         public ICPNode NextSibling
         {
             get
             {
-                return this.AttachedLinkedListNode.Next == null ? null : this.AttachedLinkedListNode.Next.Value;
+                if ((this.AttachedLinkedListNode == null) || (this.AttachedLinkedListNode.Next == null))
+                {
+                    return null;
+                }
+                return this.AttachedLinkedListNode.Next.Value;
             }
         }
 
@@ -81,13 +85,17 @@ namespace CPServiceTest.CPTree
         {
             get
             {
-                return this.AttachedLinkedListNode.Previous == null ? null : this.AttachedLinkedListNode.Previous.Value;
+                if ((this.AttachedLinkedListNode == null) || (this.AttachedLinkedListNode.Previous == null))
+                {
+                    return null;
+                }
+                return this.AttachedLinkedListNode.Previous.Value;
             }
         }
 
         public List<ICPNode> ChildNodeList
         {
-            get { throw new NotImplementedException(); }
+            get { return this.childNodeList.ToList(); }
         }
 
         public LinkedListNode<ICPNode> AttachedLinkedListNode
@@ -104,20 +112,23 @@ namespace CPServiceTest.CPTree
             }
         }
 
-        public virtual int InstanceCount
+        public int Offset
         {
-            get { throw new NotImplementedException(); }
+            get;
+            internal set;
         }
 
-        public virtual void Accept(ICPVisitor cpVisitor, object context)
+        public int InstanceCount
         {
-            cpVisitor.VisitCPNode(this);
-
-            foreach (var nextChild in this.childNodeList)
-            {
-                nextChild.Accept(cpVisitor, context);
-            }
+            get;
+            private set;
         }
+
+        public void SetInstanceCount(int count)
+        {
+            this.InstanceCount = count;
+        }
+        public abstract void Accept(ICPVisitor cpVisitor, object context);
 
         public object Tag { get; set; }
 

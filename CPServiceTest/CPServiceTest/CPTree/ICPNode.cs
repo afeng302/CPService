@@ -32,9 +32,13 @@ namespace CPServiceTest.CPTree
 
         LinkedListNode<ICPNode> AttachedLinkedListNode { get; }
 
+        int Offset { get; }
+
         bool IsLeafNode { get; }
 
         int InstanceCount { get; }
+
+        void SetInstanceCount(int count);
 
         void Accept(ICPVisitor cpVisitor, object context);
 

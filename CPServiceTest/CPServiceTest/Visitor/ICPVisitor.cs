@@ -9,9 +9,7 @@ namespace CPServiceTest.Visitor
 {
     interface ICPVisitor : IDisposable
     {
-        void VisitCPNode(ICPNode node);
-
-        void VisitCPStruct(ICPStrcut cpStruct);
+        void VisitCPStruct(ICPStruct cpStruct);
 
         void VisitCPField(ICPField cpField);
     }

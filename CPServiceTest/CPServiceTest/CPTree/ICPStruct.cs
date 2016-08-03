@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CPServiceTest.CPTree
 {
-    interface ICPStrcut : ICPNode
+    interface ICPStruct : ICPNode
     {
-        int Offset { get; }
+
         int Size { get; }
 
         void SetAttr(int offset);

@@ -29,10 +29,12 @@ namespace CPServiceTest.CPTree
     {
         TetraCpFieldType FieldType { get; }
 
-        int Offset { get; }
-
         int BitLen { get; }
 
-        void SetAttr(TetraCpFieldType type, int offset, int bitLen);
+        int StartBit { get; }
+
+        byte Mask { get; }
+
+        void SetAttr(TetraCpFieldType type, int offset, int bitLen, int startBit);
     }
 }
