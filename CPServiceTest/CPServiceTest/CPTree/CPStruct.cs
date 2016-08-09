@@ -54,12 +54,22 @@ namespace CPServiceTest.CPTree
 
         public override void Accept(Visitor.ICPVisitor cpVisitor, object context)
         {
-            cpVisitor.VisitCPStruct(this);
+            int count = 1;
 
-            foreach (var nextChild in this.ChildNodeList)
+            if (cpVisitor.TraverseMultiInstance)
             {
-                nextChild.Accept(cpVisitor, context);
+                count = this.InstanceCount;
             }
+
+            for (int i = 0; i < count; i++)
+            {
+                cpVisitor.VisitCPStruct(this);
+
+                foreach (var nextChild in this.ChildNodeList)
+                {
+                    nextChild.Accept(cpVisitor, context);
+                }
+            } // for (int i = 0; i < this.InstanceCount; i++)
         }
     }
 }

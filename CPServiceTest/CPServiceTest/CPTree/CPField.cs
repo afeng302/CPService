@@ -12,7 +12,6 @@ namespace CPServiceTest.CPTree
         public CPField(string name, string fullName)
             : base(name, fullName)
         {
-            this.Mask = 0xFF;
         }
         public TetraCpFieldType FieldType { get; private set; }
 
@@ -28,6 +27,11 @@ namespace CPServiceTest.CPTree
             this.Offset = offset;
             this.BitLen = bitLen;
             this.StartBit = startBit;
+        }
+
+        public void SetMask(byte mask)
+        {
+            this.Mask = mask;
         }
 
         public override void Accept(ICPVisitor cpVisitor, object context)

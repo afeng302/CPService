@@ -137,6 +137,16 @@ namespace CPServiceTest
             this.lstBoxOutput.Items.Insert(0, string.Format("Time elapsed (build tree): {0} ms", sw.ElapsedMilliseconds));
             sw.Restart();
 
+            // set bit field mask
+            using (BitFieldMaskSettingVisitor cpVisitor = new BitFieldMaskSettingVisitor())
+            {
+                cpTree.Root.Accept(cpVisitor, null);
+            }
+
+            sw.Stop();
+            this.lstBoxOutput.Items.Insert(0, string.Format("Time elapsed (BitFieldMaskSettingVisitor): {0} ms", sw.ElapsedMilliseconds));
+            sw.Restart();
+
             // verify the structure
             using (TestStructVisitor cpVisitor = new TestStructVisitor(@"C:\Users\a23126\Desktop\cpv-files\output-struct"))
             {
@@ -146,7 +156,6 @@ namespace CPServiceTest
             sw.Stop();
             this.lstBoxOutput.Items.Insert(0, string.Format("Time elapsed (VerifyStrucVisitor): {0} ms", sw.ElapsedMilliseconds));
             sw.Restart();
-
 
             // verify node info
             using (TestNodeInfoVisitor cpVisitor = new TestNodeInfoVisitor(@"C:\Users\a23126\Desktop\cpv-files\output-node-info"))

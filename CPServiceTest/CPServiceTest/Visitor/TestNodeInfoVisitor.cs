@@ -7,23 +7,24 @@ using System.Threading.Tasks;
 
 namespace CPServiceTest.Visitor
 {
-    class TestStructVisitor : AbsCPVisitor
+    class TestNodeInfoVisitor : AbsCPVisitor
     {
         StreamWriter sw = null;
         bool disposed = false;
-        public TestStructVisitor(string outputFile)
+
+        public TestNodeInfoVisitor(string outputFile)
         {
             sw = new StreamWriter(outputFile, false);
         }
-
         public override void VisitCPStruct(CPTree.ICPStruct cpStruct)
         {
-            sw.WriteLine(cpStruct.Tag.ToString());
+            sw.WriteLine(@"{0} {1} ""struct"" {{{2}}} ", cpStruct.FullName, cpStruct.Offset, cpStruct.InstanceCount);
         }
 
         public override void VisitCPField(CPTree.ICPField cpField)
         {
-            sw.WriteLine(cpField.Tag.ToString());
+            sw.WriteLine(@"{0} {1} ""{2}"" {{{3}}} mask[{4:X2}]", cpField.FullName, cpField.Offset, 
+                cpField.FieldType, cpField.InstanceCount, cpField.Mask);
         }
 
         public override void Dispose()
@@ -64,7 +65,7 @@ namespace CPServiceTest.Visitor
             }
         }
 
-        ~TestStructVisitor()
+        ~TestNodeInfoVisitor()
         {
             Dispose(false);
         }

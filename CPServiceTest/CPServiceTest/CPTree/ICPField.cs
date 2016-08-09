@@ -35,6 +35,8 @@ namespace CPServiceTest.CPTree
 
         byte Mask { get; }
 
+        void SetMask(byte mask);
+
         void SetAttr(TetraCpFieldType type, int offset, int bitLen, int startBit);
     }
 }

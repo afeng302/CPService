@@ -46,15 +46,15 @@ namespace CPServiceTest.Visitor
     /// https://msdn.microsoft.com/en-us/library/yszfawxh.aspx
     /// 
     /// </summary>
-    class BitFieldMaskSettingVisitor : ICPVisitor
+    class BitFieldMaskSettingVisitor : AbsCPVisitor
     {
         bool disposed = false;
-        public void VisitCPStruct(CPTree.ICPStruct cpStruct)
+        public override void VisitCPStruct(CPTree.ICPStruct cpStruct)
         {
             // do nothing
         }
 
-        public void VisitCPField(CPTree.ICPField cpField)
+        public override void VisitCPField(CPTree.ICPField cpField)
         {
             if (cpField.FieldType != CPTree.TetraCpFieldType.bit)
             {
@@ -83,10 +83,35 @@ namespace CPServiceTest.Visitor
 
             //
             // update mask
-
+            cpField.SetMask(MaskMatrix[cpField.BitLen - 1, cpField.StartBit]);
         }
 
-        public void Dispose()
+
+        /// <summary>
+        /// http://mjfrazer.org/mjfrazer/bitfields/
+        /// 
+        /// "Again, the bits are pack from most significant on a big endian machine and least significant 
+        /// on a little endian machine. Interpreted as a short, the bitfield 'a' adds 0x0001 to 'value' on 
+        /// a little endian machine and 0x8000 on a big endian machine. The unused bit is left to the end 
+        /// of interpreting the struct, so it is the MSB on a little endian machine and the LSB on a big 
+        /// endian machine."
+        /// 
+        /// This matrix works for big endian machine (CP Service will handle big endian codeplug stream).  
+        /// [bitLen - 1, startBit]
+        /// </summary>
+        private static byte[,] MaskMatrix = new byte[,] 
+            { 
+    // startBit=0,    1,    2,    3,    4,    5,    6,    7
+              { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01}, // bitLen=1
+              { 0xC0, 0x60, 0x30, 0x18, 0x0C, 0x06, 0x03, 0   }, // bitLen=2
+              { 0xE0, 0x70, 0x38, 0x1C, 0x0E, 0x07, 0,    0   }, // bitLen=3
+              { 0xF0, 0x78, 0x3C, 0x1E, 0x0F, 0,    0,    0   }, // bitLen=4
+              { 0xF8, 0x7C, 0x3E, 0x1F, 0,    0,    0,    0   }, // bitLen=5
+              { 0xFC, 0x7E, 0x3F, 0,    0,    0,    0,    0   }, // bitLen=6
+              { 0xFE, 0x7F, 0,    0,    0,    0,    0,    0   }, // bitLen=7
+              { 0xFF, 0,    0,    0,    0,    0,    0,    0   }}; // bitLen=8
+
+        public override void Dispose()
         {
             // Dispose of unmanaged resources.
             Dispose(true);

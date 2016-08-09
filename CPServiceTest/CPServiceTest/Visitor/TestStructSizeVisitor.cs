@@ -4,26 +4,45 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CPServiceTest.CPTree;
 
 namespace CPServiceTest.Visitor
 {
-    class TestStructVisitor : AbsCPVisitor
+    class TestStructSizeVisitor : AbsCPVisitor
     {
         StreamWriter sw = null;
         bool disposed = false;
-        public TestStructVisitor(string outputFile)
+
+        public TestStructSizeVisitor(string outputFile)
         {
             sw = new StreamWriter(outputFile, false);
         }
 
+        ICPNode rootNode = null;
+        int blkSize = 0;
         public override void VisitCPStruct(CPTree.ICPStruct cpStruct)
         {
-            sw.WriteLine(cpStruct.Tag.ToString());
+            sw.WriteLine(@"{0} - size[{1}] instance[{2}]", cpStruct.FullName, cpStruct.Size, cpStruct.InstanceCount);
+
+            if (cpStruct.Parent == null)
+            {
+                rootNode = cpStruct;
+            }
+
+            if (cpStruct.Parent == rootNode)
+            {
+                blkSize += cpStruct.Size;
+            }
+
+            if ((cpStruct.Parent == rootNode) && (cpStruct.NextSibling == null))
+            {
+                sw.WriteLine("---- this is last block. Total size[{0}] ----", blkSize);
+            }
         }
 
         public override void VisitCPField(CPTree.ICPField cpField)
         {
-            sw.WriteLine(cpField.Tag.ToString());
+            // do nothing
         }
 
         public override void Dispose()
@@ -64,7 +83,7 @@ namespace CPServiceTest.Visitor
             }
         }
 
-        ~TestStructVisitor()
+        ~TestStructSizeVisitor()
         {
             Dispose(false);
         }

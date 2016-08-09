@@ -57,7 +57,10 @@
     <Compile Include="CPTree\CPStruct.cs" />
     <Compile Include="CPTree\ICPField.cs" />
     <Compile Include="CPTree\ICPStruct.cs" />
+    <Compile Include="Visitor\AbsCPVisitor.cs" />
     <Compile Include="Visitor\BitFieldMaskSettingVisitor.cs" />
+    <Compile Include="Visitor\EndianReverseBitVisitor.cs" />
+    <Compile Include="Visitor\EndianReverseByteVisitor.cs" />
     <Compile Include="Visitor\ICPVisitor.cs" />
     <Compile Include="Visitor\TestNodeInfoVisitor.cs" />
     <Compile Include="Visitor\TestStructSizeVisitor.cs" />

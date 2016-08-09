@@ -9,8 +9,12 @@ namespace CPServiceTest.Visitor
 {
     interface ICPVisitor : IDisposable
     {
+        bool TraverseMultiInstance { get; }
+
         void VisitCPStruct(ICPStruct cpStruct);
 
         void VisitCPField(ICPField cpField);
+
+        object Context { get; }
     }
 }
