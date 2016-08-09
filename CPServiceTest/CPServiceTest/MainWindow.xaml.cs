@@ -54,7 +54,7 @@ namespace CPServiceTest
                     }
 
                     string fullName = m.Groups["path"].Value;
-                    string[] names = fullName.Split(new char[1] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] names = fullName.Split(new char[1] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                     string name = names[names.Length - 1]; // the last section
 
                     if (m.Groups["type"].Value == "union")
