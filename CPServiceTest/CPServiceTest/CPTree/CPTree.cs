@@ -30,7 +30,7 @@ namespace CPServiceTest.CPTree
             }
 
             string[] names = node.FullName.Split(new char[1] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-            
+
             // root node
             if (names.Length == 1)
             {
@@ -61,6 +61,16 @@ namespace CPServiceTest.CPTree
             // add node onto tree
             parentNode.AddChild(node);
             this.nodeFullNameMap[node.FullName] = node;
+        }
+
+        public ICPNode GetNode(string name)
+        {
+            if (!this.nodeFullNameMap.ContainsKey(name))
+            {
+                return null;
+            }
+
+            return this.nodeFullNameMap[name];
         }
     }
 }

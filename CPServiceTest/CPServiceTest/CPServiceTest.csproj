@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CPServiceUtil.cs" />
     <Compile Include="CPTree\CPField.cs" />
     <Compile Include="CPTree\CPStruct.cs" />
     <Compile Include="CPTree\ICPField.cs" />
