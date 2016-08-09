@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CPServiceTest.CPTree
 {
-    interface ICPStruct : ICPNode
+    public interface ICPStruct : ICPNode
     {
 
         int Size { get; }

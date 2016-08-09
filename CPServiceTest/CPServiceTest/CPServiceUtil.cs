@@ -10,11 +10,11 @@ using CPServiceTest.Visitor;
 
 namespace CPServiceTest
 {
-    static class CPServiceUtil
+    public static class CPServiceUtil
     {
         static Regex __reg_line = new Regex(@"(?<path>^[\w|:]+)\s+(?<offset>\d+):*(?<bit_start>\d*)\s+""(?<type>[\w|\s]+)""\s+{(?<dim>[\d|\s]+)}\s+(?<bit_len>\d+)");
 
-        static TetraCPTree CreateCPTree(string cpsFile)
+        public static TetraCPTree CreateCPTree(string cpsFile)
         {
             TetraCPTree cpTree = new TetraCPTree();
 
@@ -122,7 +122,7 @@ namespace CPServiceTest
             return cpTree;
         }
 
-        static byte[] GetCPValue(TetraCPTree cpTree, string fldName, byte[] cpImage)
+        public static byte[] GetCPValue(TetraCPTree cpTree, string fldName, byte[] cpImage)
         {
             // do not support the dimension parameter now
 
@@ -143,6 +143,24 @@ namespace CPServiceTest
             Array.Copy(cpImage, cpField.Offset, data, 0, cpField.BitLen / 8);
 
             return data;
+        }
+
+        public static void SetCPValue(byte[] cpValue, TetraCPTree cpTree, string fldName, byte[] cpImage)
+        {
+            ICPField cpField = cpTree.GetNode(fldName) as ICPField;
+            if (cpField == null)
+            {
+                // error log
+                return;
+            }
+
+            if (cpField.FieldType == TetraCpFieldType.bit)
+            {
+                // handle it later
+                return;
+            }
+
+            Array.Copy(cpValue, 0, cpImage, cpField.Offset, cpField.BitLen / 8);
         }
     }
 }

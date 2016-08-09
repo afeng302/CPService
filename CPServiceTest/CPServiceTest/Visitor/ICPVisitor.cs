@@ -7,7 +7,7 @@ using CPServiceTest.CPTree;
 
 namespace CPServiceTest.Visitor
 {
-    interface ICPVisitor : IDisposable
+    public interface ICPVisitor : IDisposable
     {
         bool TraverseMultiInstance { get; }
 

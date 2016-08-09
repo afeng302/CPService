@@ -8,7 +8,7 @@ using CPServiceTest.Visitor;
 namespace CPServiceTest.CPTree
 {
 
-    interface ICPNode
+    public interface ICPNode
     {
         string Name { get; }
 

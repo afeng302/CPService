@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CPServiceTest.CPTree
 {
-    internal class TetraCPTree
+    public class TetraCPTree
     {
         Dictionary<string, ICPNode> nodeFullNameMap = new Dictionary<string, ICPNode>();
 
@@ -71,6 +71,22 @@ namespace CPServiceTest.CPTree
             }
 
             return this.nodeFullNameMap[name];
+        }
+
+        public TetraCpFieldType GetFieldType(string name)
+        {
+            if (!this.nodeFullNameMap.ContainsKey(name))
+            {
+                return TetraCpFieldType.None;
+            }
+
+            ICPField cpField = this.nodeFullNameMap[name] as ICPField;
+            if (cpField == null)
+            {
+                throw new Exception("field type error!");
+            }
+
+            return cpField.FieldType;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace CPServiceTest.CPTree
         UINT32,
     }
 
-    interface ICPField : ICPNode
+    public interface ICPField : ICPNode
     {
         TetraCpFieldType FieldType { get; }
 
